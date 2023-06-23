@@ -1,0 +1,47 @@
+.tableWrapper {
+    width: 100%;
+    padding: 4px;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    min-width: 200px;
+}
+
+th {
+    background-color: #f2f2f2;
+    margin-right: auto;
+    text-align: justify;
+    position: relative;
+    cursor: pointer;
+
+    &::after {
+        content: '';
+        display: inline-block;
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        width: 0;
+        height: 0;
+        border-right: solid 10px transparent;
+        border-left: solid 10px transparent;
+        border-top: solid 10px black;
+    }
+}
+
+th,
+td:not(:last-child) {
+    border-right: 1px solid #ddd;
+}
