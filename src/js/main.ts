@@ -3,14 +3,21 @@ import { fetchUsers } from '../api/users';
 import { userDetailsTable } from '../templates/modalContent';
 import { replacePlaceholders } from '../utils/replacePlaceholdersHtml';
 import { userTableRow } from '../templates/usersTable';
+import {
+    removeClassesFromNotTargetElement,
+    toggleArrowClass,
+} from '../utils/actionsArrowClass';
+import { sortTableByAlphanumeric } from '../utils/sortTable';
 
 const ELEMENTS: {
     table: HTMLTableSectionElement | null;
-    columnHeaders: NodeListOf<HTMLTableCellElement>;
+    tableHead: HTMLTableCaptionElement | null;
+    columnHeaders: NodeListOf<HTMLTableCaptionElement>;
     modal: HTMLDivElement | null;
     modalContent: HTMLDivElement | null;
 } = {
     table: document.querySelector('tbody'),
+    tableHead: document.querySelector('thead'),
     columnHeaders: document.querySelectorAll('th'),
     modal: document.querySelector('.modal'),
     modalContent: document.querySelector('.modal-content'),
@@ -23,7 +30,7 @@ function init() {
             return;
         }
         renderUsersTable(users);
-        onClickColumnHeaderHandler(users);
+        sortUserTableByHeaderName(users);
     });
 }
 
@@ -40,20 +47,6 @@ function renderUsersTable(users: User[]) {
         table.innerHTML = renderContentHtml;
         openModalHandler(users);
     }
-}
-
-function onClickColumnHeaderHandler(users: User[]) {
-    const { columnHeaders } = ELEMENTS;
-    columnHeaders.forEach((columnHeader) => {
-        columnHeader.addEventListener('click', () => {
-            const columnName =
-                columnHeader.textContent?.toLocaleLowerCase() as keyof User;
-            users.sort((prevUser, currUser) =>
-                prevUser[columnName] < currUser[columnName] ? -1 : 1
-            );
-            renderUsersTable(users);
-        });
-    });
 }
 
 function openModalHandler(users: User[]) {
@@ -95,4 +88,32 @@ function onCloseModal() {
             modalContent.replaceChildren('');
         });
     }
+}
+
+function sortUserTableByHeaderName(users: User[]) {
+    const { tableHead } = ELEMENTS;
+
+    tableHead?.addEventListener('click', (event) => {
+        const headersTh = (
+            event.currentTarget as HTMLTableElement
+        ).querySelectorAll('th');
+
+        const targetHeader = event.target as HTMLTableCaptionElement;
+
+        const columnName =
+            targetHeader.textContent?.toLocaleLowerCase() as keyof User;
+
+        removeClassesFromNotTargetElement(headersTh, targetHeader, [
+            'arrow-up',
+            'arrow-down',
+        ]);
+
+        toggleArrowClass(targetHeader);
+
+        const sortedUsers = targetHeader.classList.contains('arrow-down')
+            ? sortTableByAlphanumeric(users, columnName, 'increasing')
+            : sortTableByAlphanumeric(users, columnName, 'decreasing');
+
+        renderUsersTable(sortedUsers);
+    });
 }

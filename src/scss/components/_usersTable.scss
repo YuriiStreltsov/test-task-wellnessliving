@@ -26,7 +26,7 @@
         position: relative;
         cursor: pointer;
 
-        &::after {
+        &.arrow-down::after {
             content: '';
             display: inline-block;
             position: absolute;
@@ -34,9 +34,21 @@
             top: 15px;
             width: 0;
             height: 0;
-            border-right: solid 10px transparent;
-            border-left: solid 10px transparent;
-            border-top: solid 10px black;
+            border-right: solid 8px transparent;
+            border-left: solid 8px transparent;
+            border-top: solid 8px black;
+        }
+        &.arrow-up::after {
+            content: '';
+            display: inline-block;
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            width: 0;
+            height: 0;
+            border-right: solid 8px transparent;
+            border-left: solid 8px transparent;
+            border-bottom: solid 8px black;
         }
     }
 
