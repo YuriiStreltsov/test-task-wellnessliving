@@ -1,8 +1,8 @@
 import { User } from '../types/users';
 import { fetchUsers } from '../api/users';
-import { addNewUserForm, userDetailsTable } from '../templates/modalContent';
+
+import { newUserForm, userDetailsTable, userTableRow } from '../templates';
 import { replacePlaceholders } from '../utils/replacePlaceholdersHtml';
-import { userTableRow } from '../templates/usersTable';
 import {
     removeClassesFromNotTargetElement,
     toggleArrowClass,
@@ -98,7 +98,7 @@ function onShowAddUserModal(users: User[]) {
     addNewUserButton?.addEventListener('click', showNewUserForm);
 
     function showNewUserForm() {
-        openModal(addNewUserForm);
+        openModal(newUserForm);
         const form = document.querySelector(
             '#add-user-form'
         ) as HTMLFormElement;
