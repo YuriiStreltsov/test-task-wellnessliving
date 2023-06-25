@@ -1,6 +1,6 @@
 module.exports = {
-  root: 'src',
-  build: {
-    outDir: '../dist'
-  }
-}
+    root: 'src',
+    build: {
+        outDir: '/test-task-wellnessliving/',
+    },
+};
