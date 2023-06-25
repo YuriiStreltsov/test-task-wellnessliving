@@ -1,17 +1,17 @@
-![Vite Vanilla JS Banner](https://user-images.githubusercontent.com/13462122/158487769-9a3c2dc8-db13-4034-934b-922ed59da656.jpg)
+![Vite Vanilla JS Banner](./src//img/banner.jpg)
 
-# Vite Vanilla Project Builder <!-- omit in toc -->
+# JavaScript/React developer position test from Wellnessliving <!-- omit in toc -->
 
-This repository will help create a boilerplate vanilla javascript project using Vite. When downloading the repo locally all future projects can be created just by copying and renaming folder your project name.
+This repository is created to show vanilla js knowledge
 
-- [Dev Dependencies](#dev-dependencies)
-- [Tech Stack](#tech-stack)
-- [How to Use](#how-to-use)
-- [Installation](#installation)
-  - [Open Terminial](#open-terminial)
-  - [Build Project](#build-project)
-  - [Open in Editor (VS Code)](#open-in-editor-vs-code)
-- [License](#license)
+-   [Dev Dependencies](#dev-dependencies)
+-   [Tech Stack](#tech-stack)
+-   [How to Use](#how-to-use)
+-   [Installation](#installation)
+    -   [Open Terminial](#open-terminial)
+    -   [Build Project](#build-project)
+    -   [Open in Editor (VS Code)](#open-in-editor-vs-code)
+-   [License](#license)
 
 ## Dev Dependencies
 
@@ -51,8 +51,6 @@ This repository will help create a boilerplate vanilla javascript project using 
 -   vite.config.js file sets up project input to 'src' folder.
 -   Use eslintrc file to configure linting rules
 -   Use prettierrc file to configure formatting rules
--   Once new project has been setup and dependencies installed delete image folder and README
--   Rename README_template to README for project
 
 ## Installation
 
@@ -62,22 +60,9 @@ This repository will help create a boilerplate vanilla javascript project using 
 
 <br>
 
-![Use template](https://user-images.githubusercontent.com/13462122/158497897-25472b88-45b7-4acc-b1d9-f939e06604be.png)
-
-![repo from template](https://user-images.githubusercontent.com/13462122/158497970-cae311de-c9a2-4100-9dd9-3fced8bcd334.png)
-
-1. Use this template
-2. Name the repository
-3. Write a short description
-4. Create Repository from Template
-
-<br>
-
-![zip download screen shot](https://user-images.githubusercontent.com/13462122/158488258-9145bf9c-a738-490a-a148-be0bb7ce1b2c.jpg)
-
 1. Download Zip File
-    - Click Code Button (1)
-    - Download Zip (2)
+    - Click Code Button
+    - Download Zip
 2. Unzip file
 3. Move folder to project location
     - Rename folder to project name OR
