@@ -1,13 +1,13 @@
 import { User } from '../types/users';
 import { fetchUsers } from '../api/users';
-import { userDetailsTable } from '../templates/modalContent';
+import { addNewUserForm, userDetailsTable } from '../templates/modalContent';
 import { replacePlaceholders } from '../utils/replacePlaceholdersHtml';
 import { userTableRow } from '../templates/usersTable';
 import {
     removeClassesFromNotTargetElement,
     toggleArrowClass,
 } from '../utils/actionsArrowClass';
-import { sortTableByAlphanumeric } from '../utils/sortTable';
+import { sortTableByAlphabetically } from '../utils/sortTable';
 
 const ELEMENTS: {
     tableBody: HTMLTableSectionElement;
@@ -31,7 +31,8 @@ function init() {
         }
         renderUsersTable(users);
         sortUserTableByHeaderName(users);
-        openModal(users);
+        onShowUserDetails(users);
+        onShowAddUserModal(users);
     });
 }
 
@@ -42,7 +43,7 @@ function renderUsersTable(users: User[]) {
     let renderContentHtml = '';
 
     users.map((user) => {
-        renderContentHtml += replacePlaceholders(user, userTableRow);
+        renderContentHtml += replacePlaceholders(userTableRow, user);
     });
 
     tableBody.innerHTML = renderContentHtml;
@@ -69,14 +70,14 @@ function sortUserTableByHeaderName(users: User[]) {
         toggleArrowClass(targetHeader);
 
         const sortedUsers = targetHeader.classList.contains('arrow-down')
-            ? sortTableByAlphanumeric(users, columnName, 'increasing')
-            : sortTableByAlphanumeric(users, columnName, 'decreasing');
+            ? sortTableByAlphabetically(users, columnName, 'increasing')
+            : sortTableByAlphabetically(users, columnName, 'decreasing');
 
         renderUsersTable(sortedUsers);
     });
 }
 
-function openModal(users: User[]) {
+function onShowUserDetails(users: User[]) {
     const { tableBody, modal, modalContent } = ELEMENTS;
 
     tableBody?.addEventListener('click', (event) => {
@@ -84,29 +85,67 @@ function openModal(users: User[]) {
         const userRow = target.parentElement!;
         const userId = userRow?.getAttribute('data-id') as string;
 
-        const userData = users.find((user) => user.id === +userId);
+        const userData = users.find((user) => user.id === +userId)!;
         if (userData) {
-            const modalContentHtml = replacePlaceholders(
-                userData,
-                userDetailsTable
-            );
-
-            modalContent.insertAdjacentHTML('beforeend', modalContentHtml);
-            modal.style.display = 'block';
+            openModal(userDetailsTable, userData);
         }
-        onCloseModal();
     });
+}
+
+function onShowAddUserModal(users: User[]) {
+    const addNewUserButton = document.querySelector('.addUser');
+
+    addNewUserButton?.addEventListener('click', showNewUserForm);
+
+    function showNewUserForm() {
+        openModal(addNewUserForm);
+        const form = document.querySelector(
+            '#add-user-form'
+        ) as HTMLFormElement;
+        submitUserForm(form, users);
+    }
+}
+
+function openModal(
+    template: string,
+    templateObjectVariables?: Record<string, any>
+) {
+    const { modal, modalContent, modalClose } = ELEMENTS;
+
+    const modalContentHtml = replacePlaceholders(
+        template,
+        templateObjectVariables
+    );
+
+    modalContent.insertAdjacentHTML('beforeend', modalContentHtml);
+    modal.style.display = 'block';
+
+    modalClose.addEventListener('click', onCloseModal);
 }
 
 function onCloseModal() {
     const { modal, modalContent, modalClose } = ELEMENTS;
 
-    function handleCloseModalClick() {
-        modalContent.replaceChildren('');
-        modal.style.display = 'none';
+    modalContent.replaceChildren('');
+    modal.style.display = 'none';
 
-        modalClose.removeEventListener('click', handleCloseModalClick);
-    }
+    modalClose.removeEventListener('click', onCloseModal);
+}
 
-    modalClose.addEventListener('click', handleCloseModalClick);
+function submitUserForm(form: HTMLFormElement, users: User[]) {
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const obj = {};
+
+        const userForm = event.target as HTMLFormElement;
+
+        const formData = new FormData(userForm);
+
+        for (const key of formData.keys()) {
+            obj[key] = formData.get(key);
+        }
+        users.push(obj as User);
+        onCloseModal();
+        renderUsersTable(users);
+    });
 }

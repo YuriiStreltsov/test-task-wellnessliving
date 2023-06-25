@@ -1,4 +1,4 @@
-export function sortTableByAlphanumeric<T>(
+export function sortTableByAlphabetically<T>(
     initData: Array<T>,
     keyName: string,
     sortOrder: 'decreasing' | 'increasing'
@@ -7,17 +7,17 @@ export function sortTableByAlphanumeric<T>(
 
     switch (sortOrder) {
         case 'decreasing':
-            sortedData.sort((prevUser, currUser) =>
-                prevUser[keyName] < currUser[keyName] ? -1 : 1
+            sortedData.sort((prevItem, currItem) =>
+                prevItem[keyName].localeCompare(currItem[keyName])
             );
             return sortedData;
         case 'increasing':
-            sortedData.sort((prevUser, currUser) =>
-                prevUser[keyName] > currUser[keyName] ? -1 : 1
+            sortedData.sort((prevItem, currItem) =>
+                currItem[keyName].localeCompare(prevItem[keyName])
             );
             return sortedData;
 
         default:
-            return sortedData;
+            return initData;
     }
 }
