@@ -1,5 +1,4 @@
 export const userDetailsTable = `
-<span class="modal-close">&times;</span>
 <div class="tableWrapper">
 <table class="modal-table">
     <tr>

@@ -10,17 +10,17 @@ import {
 import { sortTableByAlphanumeric } from '../utils/sortTable';
 
 const ELEMENTS: {
-    table: HTMLTableSectionElement | null;
-    tableHead: HTMLTableCaptionElement | null;
-    columnHeaders: NodeListOf<HTMLTableCaptionElement>;
-    modal: HTMLDivElement | null;
-    modalContent: HTMLDivElement | null;
+    tableBody: HTMLTableSectionElement;
+    tableHead: HTMLTableCaptionElement;
+    modal: HTMLDivElement;
+    modalContent: HTMLDivElement;
+    modalClose: HTMLButtonElement;
 } = {
-    table: document.querySelector('tbody'),
-    tableHead: document.querySelector('thead'),
-    columnHeaders: document.querySelectorAll('th'),
-    modal: document.querySelector('.modal'),
-    modalContent: document.querySelector('.modal-content'),
+    tableBody: document.querySelector('tbody')!,
+    tableHead: document.querySelector('thead')!,
+    modal: document.querySelector('.modal')!,
+    modalContent: document.querySelector('.modal-content')!,
+    modalClose: document.querySelector('.modal-close')!,
 };
 
 function init() {
@@ -31,63 +31,21 @@ function init() {
         }
         renderUsersTable(users);
         sortUserTableByHeaderName(users);
+        openModal(users);
     });
 }
 
 init();
 
 function renderUsersTable(users: User[]) {
-    const { table } = ELEMENTS;
+    const { tableBody } = ELEMENTS;
     let renderContentHtml = '';
 
     users.map((user) => {
         renderContentHtml += replacePlaceholders(user, userTableRow);
     });
-    if (table) {
-        table.innerHTML = renderContentHtml;
-        openModalHandler(users);
-    }
-}
 
-function openModalHandler(users: User[]) {
-    const { modal, modalContent } = ELEMENTS;
-    const tableRows = document.querySelectorAll('tbody tr');
-    if (modal && modalContent) {
-        tableRows.forEach((row) => {
-            const rowId = row.getAttribute('data-id');
-            if (rowId) {
-                const userData = users.find((user) => user.id === +rowId);
-
-                if (userData) {
-                    row.addEventListener('click', () => {
-                        const modalContentHtml = replacePlaceholders(
-                            userData,
-                            userDetailsTable
-                        );
-
-                        modalContent.insertAdjacentHTML(
-                            'beforeend',
-                            modalContentHtml
-                        );
-                        modal.style.display = 'block';
-                        onCloseModal();
-                    });
-                }
-            }
-        });
-    }
-}
-
-function onCloseModal() {
-    const { modal, modalContent } = ELEMENTS;
-    const modalClose = document.querySelector('.modal-close');
-
-    if (modal && modalClose && modalContent) {
-        modalClose.addEventListener('click', () => {
-            modal.style.display = 'none';
-            modalContent.replaceChildren('');
-        });
-    }
+    tableBody.innerHTML = renderContentHtml;
 }
 
 function sortUserTableByHeaderName(users: User[]) {
@@ -116,4 +74,39 @@ function sortUserTableByHeaderName(users: User[]) {
 
         renderUsersTable(sortedUsers);
     });
+}
+
+function openModal(users: User[]) {
+    const { tableBody, modal, modalContent } = ELEMENTS;
+
+    tableBody?.addEventListener('click', (event) => {
+        const target = event.target as HTMLTableElement;
+        const userRow = target.parentElement!;
+        const userId = userRow?.getAttribute('data-id') as string;
+
+        const userData = users.find((user) => user.id === +userId);
+        if (userData) {
+            const modalContentHtml = replacePlaceholders(
+                userData,
+                userDetailsTable
+            );
+
+            modalContent.insertAdjacentHTML('beforeend', modalContentHtml);
+            modal.style.display = 'block';
+        }
+        onCloseModal();
+    });
+}
+
+function onCloseModal() {
+    const { modal, modalContent, modalClose } = ELEMENTS;
+
+    function handleCloseModalClick() {
+        modalContent.replaceChildren('');
+        modal.style.display = 'none';
+
+        modalClose.removeEventListener('click', handleCloseModalClick);
+    }
+
+    modalClose.addEventListener('click', handleCloseModalClick);
 }
