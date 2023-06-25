@@ -1,0 +1,30 @@
+.modal-table {
+    border-collapse: collapse;
+    width: 100%;
+
+    th,
+    td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    td table {
+        width: 100%;
+    }
+
+    td table th,
+    td table td {
+        padding: 4px;
+        border: none;
+    }
+
+    td table th {
+        background-color: #f2f2f2;
+        font-weight: normal;
+    }
+}

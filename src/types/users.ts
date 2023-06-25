@@ -1,7 +1,7 @@
 export type User = {
     id: number;
-    address: string;
-    company: Company;
+    address: UserAddress;
+    company: UserCompany;
     email: string;
     phone: string;
     name: string;
@@ -9,8 +9,14 @@ export type User = {
     website: string;
 };
 
-type Company = {
-    name: string;
+type UserCompany = {
+    companyName: string;
     catchPhrase: string;
     bs: string;
+};
+
+type UserAddress = {
+    city: string;
+    street: string;
+    zipcode: string;
 };

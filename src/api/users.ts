@@ -9,8 +9,17 @@ export async function fetchUsers(): Promise<Array<User> | undefined> {
         if (!response.ok) {
             throw new Error('Not found Users');
         }
+        const users = await response.json();
+        const updatedUsersFields: User[] = users.map((user) => ({
+            ...user,
+            company: {
+                companyName: user.company.name,
+                catchPhrase: user.company.catchPhrase,
+                bs: user.company.bs,
+            },
+        }));
 
-        return await response.json();
+        return updatedUsersFields;
     } catch (error) {
         console.log(error);
         return undefined;
