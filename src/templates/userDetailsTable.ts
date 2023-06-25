@@ -58,5 +58,6 @@ export const userDetailsTable = `
         </td>
     </tr>
 </table>
+<button class="remove-button">Remove</button>
 </div>
 `;

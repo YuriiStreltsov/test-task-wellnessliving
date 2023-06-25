@@ -30,8 +30,8 @@ function init() {
             return;
         }
         renderUsersTable(users);
-        sortUserTableByHeaderName(users);
-        onShowUserDetails(users);
+        sortTableHandler(users);
+        showUserDetailsHandler(users);
         onShowAddUserModal(users);
     });
 }
@@ -49,7 +49,7 @@ function renderUsersTable(users: User[]) {
     tableBody.innerHTML = renderContentHtml;
 }
 
-function sortUserTableByHeaderName(users: User[]) {
+function sortTableHandler(users: User[]) {
     const { tableHead } = ELEMENTS;
 
     tableHead?.addEventListener('click', (event) => {
@@ -77,10 +77,10 @@ function sortUserTableByHeaderName(users: User[]) {
     });
 }
 
-function onShowUserDetails(users: User[]) {
-    const { tableBody, modal, modalContent } = ELEMENTS;
+function showUserDetailsHandler(users: User[]) {
+    const { tableBody } = ELEMENTS;
 
-    tableBody?.addEventListener('click', (event) => {
+    function onClickTableBodyRowHandler(event: Event) {
         const target = event.target as HTMLTableElement;
         const userRow = target.parentElement!;
         const userId = userRow?.getAttribute('data-id') as string;
@@ -88,16 +88,19 @@ function onShowUserDetails(users: User[]) {
         const userData = users.find((user) => user.id === +userId)!;
         if (userData) {
             openModal(userDetailsTable, userData);
+            removeUserHandler(users, userId);
         }
-    });
+    }
+
+    tableBody?.addEventListener('click', onClickTableBodyRowHandler);
 }
 
 function onShowAddUserModal(users: User[]) {
     const addNewUserButton = document.querySelector('.addUser');
 
-    addNewUserButton?.addEventListener('click', showNewUserForm);
+    addNewUserButton?.addEventListener('click', showNewUserFormHandler);
 
-    function showNewUserForm() {
+    function showNewUserFormHandler() {
         openModal(newUserForm);
         const form = document.querySelector(
             '#add-user-form'
@@ -118,7 +121,7 @@ function openModal(
     );
 
     modalContent.insertAdjacentHTML('beforeend', modalContentHtml);
-    modal.style.display = 'block';
+    modal.classList.add('show');
 
     modalClose.addEventListener('click', onCloseModal);
 }
@@ -127,7 +130,7 @@ function onCloseModal() {
     const { modal, modalContent, modalClose } = ELEMENTS;
 
     modalContent.replaceChildren('');
-    modal.style.display = 'none';
+    modal.classList.remove('show');
 
     modalClose.removeEventListener('click', onCloseModal);
 }
@@ -144,8 +147,31 @@ function submitUserForm(form: HTMLFormElement, users: User[]) {
         for (const key of formData.keys()) {
             obj[key] = formData.get(key);
         }
+
+        obj['id'] = Date.now() + Math.random();
+
         users.push(obj as User);
+
         onCloseModal();
+
         renderUsersTable(users);
     });
+}
+
+function removeUserHandler(users: User[], userId: string) {
+    const removeButton = document.querySelector(
+        '.remove-button'
+    ) as HTMLButtonElement;
+
+    function onClickRemoveButton(event: MouseEvent) {
+        const userIndex = users.findIndex((user) => user.id === +userId);
+
+        if (userIndex > -1) {
+            users.splice(userIndex, 1);
+        }
+        onCloseModal();
+        renderUsersTable(users);
+    }
+
+    removeButton?.addEventListener('click', onClickRemoveButton);
 }

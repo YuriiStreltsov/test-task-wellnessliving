@@ -6,21 +6,30 @@
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    overflow: auto;
     background-color: rgba(0, 0, 0, 0.8);
+    transition: opacity 0.3s ease;
 }
+
+.modal.show {
+    display: block;
+}
+
 .modal-wrapper {
     position: relative;
     width: 80%;
     max-width: 600px;
     margin: 15% auto;
+    transform: scale(0);
+    transition: transform 0.3s ease;
 }
+
 .modal-content {
     background-color: #fefefe;
-
-    padding: 20px;
+    padding: 40px;
     border: 1px solid #888;
 }
+
 .modal-close {
     color: #aaa;
     position: absolute;
@@ -32,4 +41,8 @@
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+}
+
+.modal.show .modal-wrapper {
+    transform: scale(1);
 }
