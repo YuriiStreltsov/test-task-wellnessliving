@@ -19,6 +19,6 @@ export function toggleArrowClass(element: HTMLElement) {
         element.classList.remove('arrow-up');
         element.classList.add('arrow-down');
     } else {
-        element.classList.toggle('arrow-down');
+        element.classList.toggle('arrow-up');
     }
 }
