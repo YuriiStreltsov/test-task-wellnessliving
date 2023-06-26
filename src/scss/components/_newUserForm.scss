@@ -8,6 +8,9 @@
 
 .form-group {
     margin-bottom: 15px;
+    &.button-group {
+        margin-bottom: 0;
+    }
 }
 
 label {
@@ -25,6 +28,10 @@ input[type='email'] {
 }
 
 button[type='submit'] {
+    display: block;
+    width: 50%;
+    text-align: center;
+    margin: auto;
     padding: 10px 20px;
     background-color: #4caf50;
     color: #fff;
@@ -35,4 +42,40 @@ button[type='submit'] {
 
 button[type='submit']:hover {
     background-color: #45a049;
+}
+
+@media (max-width: 767px) {
+    .form-group {
+        display: block;
+        margin-bottom: 10px;
+    }
+    .form-group label {
+        display: block;
+    }
+    .form-group input {
+        display: block;
+        width: 100%;
+    }
+    .form-group button {
+        width: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    .formWrapper {
+        max-width: 800px;
+        // margin: 0 auto;
+        // padding: 20px;
+        // background-color: #f4f4f4;
+        // border-radius: 5px;
+    }
+    .form-columns {
+        display: flex;
+    }
+    .column {
+        flex: 1;
+        &:not(:last-child) {
+            margin-right: 10px;
+        }
+    }
 }

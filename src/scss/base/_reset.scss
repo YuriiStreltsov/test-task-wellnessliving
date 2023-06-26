@@ -81,5 +81,7 @@ select {
 }
 
 button {
-    all: unset;
+    background-color: transparent;
+    outline: none;
+    border: none;
 }

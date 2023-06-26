@@ -18,8 +18,8 @@
 .modal-wrapper {
     position: relative;
     width: 80%;
-    max-width: 600px;
-    margin: 15% auto;
+    max-width: 800px;
+    margin: 8% auto;
     transform: scale(0);
     transition: transform 0.3s ease;
 }
@@ -50,7 +50,7 @@
 @media screen and (max-width: 768px) {
     .modal-wrapper {
         width: 90%;
-        margin: 10% auto;
+        margin: 4% auto;
     }
 
     .modal-content {
@@ -69,6 +69,7 @@
 
     .remove-button {
         display: block;
-        margin-top: 20px;
+        margin: 10px auto;
+        width: 35%;
     }
 }
